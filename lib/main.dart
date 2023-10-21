@@ -1,32 +1,50 @@
+import 'package:drawer_challenge/custom_drawer_guitar.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+import 'custom_drawer.dart';
+
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
+    bool flip = false;
+    AppBar appBar = flip
+        ? AppBar()
+        : AppBar(
+            leading: Builder(
+              builder: (context) {
+                return IconButton(
+                  icon: Icon(Icons.menu),
+                  onPressed: () => CustomDrawer.of(context).open(),
+                );
+              },
+            ),
+            title: Text('Hello Flutter Europe'),
+          );
+    Widget child = MyHomePage(appBar: appBar);
+    if (flip) {
+      child = CustomGuitarDrawer(child: child);
+    } else {
+      child = CustomDrawer(child: child);
+    }
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: child,
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  final AppBar appBar;
 
-  final String title;
+  MyHomePage({Key key, @required this.appBar}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -41,20 +59,17 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
+      appBar: widget.appBar,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
+            Text(
               'You have pushed the button this many times:',
             ),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+              style: Theme.of(context).textTheme.display1,
             ),
           ],
         ),
@@ -62,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        child: Icon(Icons.add),
       ),
     );
   }
