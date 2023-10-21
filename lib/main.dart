@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'custom_drawer.dart';
 
+ValueNotifier showGuitar = ValueNotifier(false);
+
 void main() => runApp(const MyApp());
 
 class MyApp extends StatefulWidget {
@@ -13,30 +15,21 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool flip = false;
-
   @override
   Widget build(BuildContext context) {
-    final actions = [
-      Padding(
-        padding: const EdgeInsets.only(right: 20),
-        child: IconButton(
-          onPressed: () {
-            setState(() {
-              flip = !flip;
-            });
-          },
-          icon: const Icon(Icons.flip),
-        ),
-      )
-    ];
+    return ValueListenableBuilder(
+      valueListenable: showGuitar,
+      builder: (context, value, child) {
+        return buildApp(context);
+      },
+    );
+  }
 
+  Widget buildApp(BuildContext context) {
+    final flip = showGuitar.value;
     AppBar appBar = flip
-        ? AppBar(
-            actions: actions,
-          )
+        ? AppBar()
         : AppBar(
-            actions: actions,
             leading: Builder(
               builder: (context) {
                 return IconButton(
@@ -89,6 +82,15 @@ class MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  showGuitar.value = !showGuitar.value;
+                });
+              },
+              icon: const Icon(Icons.flip),
+            ),
+            const SizedBox(height: 20),
             const Text(
               'You have pushed the button this many times:',
             ),
