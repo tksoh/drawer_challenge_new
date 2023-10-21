@@ -5,18 +5,18 @@ import 'package:flutter/material.dart';
 class CustomGuitarDrawer extends StatefulWidget {
   final Widget child;
 
-  const CustomGuitarDrawer({Key key, this.child}) : super(key: key);
+  const CustomGuitarDrawer({super.key, required this.child});
 
-  static CustomGuitarDrawerState of(BuildContext context) =>
+  static CustomGuitarDrawerState? of(BuildContext context) =>
       context.findAncestorStateOfType<CustomGuitarDrawerState>();
 
   @override
-  CustomGuitarDrawerState createState() => new CustomGuitarDrawerState();
+  CustomGuitarDrawerState createState() => CustomGuitarDrawerState();
 }
 
 class CustomGuitarDrawerState extends State<CustomGuitarDrawer>
     with SingleTickerProviderStateMixin {
-  AnimationController animationController;
+  late AnimationController animationController;
   bool _canBeDragged = false;
   final double maxSlide = 300.0;
 
@@ -25,7 +25,7 @@ class CustomGuitarDrawerState extends State<CustomGuitarDrawer>
     super.initState();
     animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 250),
+      duration: const Duration(milliseconds: 250),
     );
   }
 
@@ -61,7 +61,7 @@ class CustomGuitarDrawerState extends State<CustomGuitarDrawer>
                       ..setEntry(3, 2, 0.001)
                       ..rotateY(math.pi / 2 * (1 - animationController.value)),
                     alignment: Alignment.centerRight,
-                    child: MyDrawer(),
+                    child: const MyDrawer(),
                   ),
                 ),
                 Transform.translate(
@@ -78,7 +78,7 @@ class CustomGuitarDrawerState extends State<CustomGuitarDrawer>
                   top: 4.0 + MediaQuery.of(context).padding.top,
                   left: 4.0 + animationController.value * maxSlide,
                   child: IconButton(
-                    icon: Icon(Icons.menu),
+                    icon: const Icon(Icons.menu),
                     onPressed: toggle,
                     color: Colors.white,
                   ),
@@ -90,7 +90,7 @@ class CustomGuitarDrawerState extends State<CustomGuitarDrawer>
                   width: MediaQuery.of(context).size.width,
                   child: Text(
                     'Hello Flutter Europe',
-                    style: Theme.of(context).primaryTextTheme.title,
+                    style: Theme.of(context).primaryTextTheme.titleMedium,
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -110,19 +110,19 @@ class CustomGuitarDrawerState extends State<CustomGuitarDrawer>
 
   void _onDragUpdate(DragUpdateDetails details) {
     if (_canBeDragged) {
-      double delta = details.primaryDelta / maxSlide;
+      double delta = details.primaryDelta ?? details.delta.dx / maxSlide;
       animationController.value += delta;
     }
   }
 
   void _onDragEnd(DragEndDetails details) {
     //I have no idea what it means, copied from Drawer
-    double _kMinFlingVelocity = 365.0;
+    double kMinFlingVelocity = 365.0;
 
     if (animationController.isDismissed || animationController.isCompleted) {
       return;
     }
-    if (details.velocity.pixelsPerSecond.dx.abs() >= _kMinFlingVelocity) {
+    if (details.velocity.pixelsPerSecond.dx.abs() >= kMinFlingVelocity) {
       double visualVelocity = details.velocity.pixelsPerSecond.dx /
           MediaQuery.of(context).size.width;
 
@@ -136,6 +136,8 @@ class CustomGuitarDrawerState extends State<CustomGuitarDrawer>
 }
 
 class MyDrawer extends StatelessWidget {
+  const MyDrawer({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -154,23 +156,23 @@ class MyDrawer extends StatelessWidget {
                   'assets/flutter_europe_white.png',
                   width: 200,
                 ),
-                ListTile(
+                const ListTile(
                   leading: Icon(Icons.new_releases),
                   title: Text('News'),
                 ),
-                ListTile(
+                const ListTile(
                   leading: Icon(Icons.star),
                   title: Text('Favourites'),
                 ),
-                ListTile(
+                const ListTile(
                   leading: Icon(Icons.map),
                   title: Text('Map'),
                 ),
-                ListTile(
+                const ListTile(
                   leading: Icon(Icons.settings),
                   title: Text('Settings'),
                 ),
-                ListTile(
+                const ListTile(
                   leading: Icon(Icons.person),
                   title: Text('Profile'),
                 ),

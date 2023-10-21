@@ -1,11 +1,13 @@
-import 'package:drawer_challenge/custom_drawer_guitar.dart';
+import 'custom_drawer_guitar.dart';
 import 'package:flutter/material.dart';
 
 import 'custom_drawer.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     bool flip = false;
@@ -15,12 +17,12 @@ class MyApp extends StatelessWidget {
             leading: Builder(
               builder: (context) {
                 return IconButton(
-                  icon: Icon(Icons.menu),
-                  onPressed: () => CustomDrawer.of(context).open(),
+                  icon: const Icon(Icons.menu),
+                  onPressed: () => CustomDrawer.of(context)?.open(),
                 );
               },
             ),
-            title: Text('Hello Flutter Europe'),
+            title: const Text('Hello Flutter Europe'),
           );
     Widget child = MyHomePage(appBar: appBar);
     if (flip) {
@@ -41,13 +43,13 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   final AppBar appBar;
 
-  MyHomePage({Key key, @required this.appBar}) : super(key: key);
+  const MyHomePage({super.key, required this.appBar});
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  MyHomePageState createState() => MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
@@ -64,12 +66,12 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
+            const Text(
               'You have pushed the button this many times:',
             ),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.display1,
+              style: Theme.of(context).textTheme.labelMedium,
             ),
           ],
         ),
@@ -77,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

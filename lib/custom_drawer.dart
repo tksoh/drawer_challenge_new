@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class CustomDrawer extends StatefulWidget {
   final Widget child;
 
-  const CustomDrawer({Key key, @required this.child}) : super(key: key);
+  const CustomDrawer({super.key, required this.child});
 
-  static CustomDrawerState of(BuildContext context) =>
+  static CustomDrawerState? of(BuildContext context) =>
       context.findAncestorStateOfType<CustomDrawerState>();
 
   @override
-  CustomDrawerState createState() => new CustomDrawerState();
+  CustomDrawerState createState() => CustomDrawerState();
 }
 
 class CustomDrawerState extends State<CustomDrawer>
@@ -18,7 +18,7 @@ class CustomDrawerState extends State<CustomDrawer>
   static const double maxSlide = 225;
   static const double minDragStartEdge = 60;
   static const double maxDragStartEdge = maxSlide - 16;
-  AnimationController _animationController;
+  late AnimationController _animationController;
   bool _canBeDragged = false;
 
   @override
@@ -65,7 +65,7 @@ class CustomDrawerState extends State<CustomDrawer>
             final contentScale = 1.0 - (0.3 * animValue);
             return Stack(
               children: <Widget>[
-                MyDrawer(),
+                const MyDrawer(),
                 Transform(
                   transform: Matrix4.identity()
                     ..translate(slideAmount)
@@ -95,19 +95,19 @@ class CustomDrawerState extends State<CustomDrawer>
 
   void _onDragUpdate(DragUpdateDetails details) {
     if (_canBeDragged) {
-      double delta = details.primaryDelta / maxSlide;
+      double delta = details.primaryDelta ?? details.delta.dx / maxSlide;
       _animationController.value += delta;
     }
   }
 
   void _onDragEnd(DragEndDetails details) {
     //I have no idea what it means, copied from Drawer
-    double _kMinFlingVelocity = 365.0;
+    double kMinFlingVelocity = 365.0;
 
     if (_animationController.isDismissed || _animationController.isCompleted) {
       return;
     }
-    if (details.velocity.pixelsPerSecond.dx.abs() >= _kMinFlingVelocity) {
+    if (details.velocity.pixelsPerSecond.dx.abs() >= kMinFlingVelocity) {
       double visualVelocity = details.velocity.pixelsPerSecond.dx /
           MediaQuery.of(context).size.width;
 
@@ -121,6 +121,8 @@ class CustomDrawerState extends State<CustomDrawer>
 }
 
 class MyDrawer extends StatelessWidget {
+  const MyDrawer({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -136,23 +138,23 @@ class MyDrawer extends StatelessWidget {
                 'assets/flutter_europe_white.png',
                 width: 200,
               ),
-              ListTile(
+              const ListTile(
                 leading: Icon(Icons.new_releases),
                 title: Text('News'),
               ),
-              ListTile(
+              const ListTile(
                 leading: Icon(Icons.star),
                 title: Text('Favourites'),
               ),
-              ListTile(
+              const ListTile(
                 leading: Icon(Icons.map),
                 title: Text('Map'),
               ),
-              ListTile(
+              const ListTile(
                 leading: Icon(Icons.settings),
                 title: Text('Settings'),
               ),
-              ListTile(
+              const ListTile(
                 leading: Icon(Icons.person),
                 title: Text('Profile'),
               ),
