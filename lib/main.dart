@@ -5,15 +5,38 @@ import 'custom_drawer.dart';
 
 void main() => runApp(const MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool flip = false;
+
+  @override
   Widget build(BuildContext context) {
-    bool flip = false;
+    final actions = [
+      Padding(
+        padding: const EdgeInsets.only(right: 20),
+        child: IconButton(
+          onPressed: () {
+            setState(() {
+              flip = !flip;
+            });
+          },
+          icon: const Icon(Icons.flip),
+        ),
+      )
+    ];
+
     AppBar appBar = flip
-        ? AppBar()
+        ? AppBar(
+            actions: actions,
+          )
         : AppBar(
+            actions: actions,
             leading: Builder(
               builder: (context) {
                 return IconButton(
